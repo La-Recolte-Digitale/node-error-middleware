@@ -54,8 +54,8 @@ export const validationErrorHandler = (
   next: NextFunction
 ): void => {
   if (err.name === "ValidationError") {
-    console.error(err.errors, Object.keys(err.errors));
-    const message = Object.keys(err.errors)
+    console.error(err.errors, Object.entries(err.errors));
+    const message = Object.values(err.errors)
       .map(error =>
         error.kind === "required"
           ? `${error.path} is required`
