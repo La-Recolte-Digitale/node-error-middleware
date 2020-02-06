@@ -1,0 +1,28 @@
+{
+  "name": "larecolte-error-middleware",
+  "version": "0.1.0",
+  "description": "NodeJS + Express error handling middleware",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint --fix --ext .ts ./src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/la-recolte/node-error-middleware.git"
+  },
+  "author": "La Recolte Digital",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/la-recolte/node-error-middleware/issues"
+  },
+  "homepage": "https://gitlab.com/la-recolte/node-error-middleware#readme",
+  "devDependencies": {
+    "@types/express": "^4.17.2",
+    "@types/node": "^13.5.3",
+    "@typescript-eslint/eslint-plugin": "^2.19.0",
+    "@typescript-eslint/parser": "^2.19.0",
+    "eslint": "^6.8.0",
+    "typescript": "^3.7.5"
+  }
+}
