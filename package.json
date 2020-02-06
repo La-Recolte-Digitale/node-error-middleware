@@ -4,9 +4,9 @@
   "description": "NodeJS + Express error handling middleware",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "lint": "eslint --fix --ext .ts ./src",
-    "format": "prettier"
+    "build": "npx tsc",
+    "lint": "npx eslint --fix --ext .ts ./src",
+    "format": "npx prettier --write \"src/**/*.ts\""
   },
   "repository": {
     "type": "git",
