@@ -1,21 +1,16 @@
-import { NextFunction } from "express";
+import { NextFunction } from 'express';
 
 export interface ErrorWithStatusCode extends Error {
-  statusCode: number;
+    statusCode: number;
 }
 
 export interface ErrorsValidation extends Error {
-  errors: ErrorValidation[];
+    errors: ErrorValidation[];
 }
 
 export interface ErrorValidation {
-  kind: string;
-  path: string;
+    kind: string;
+    path: string;
 }
 
-export type ErrorRequestHandler = (
-  err: ErrorWithStatusCode,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => void;
+export type ErrorRequestHandler = (err: ErrorWithStatusCode, req: Request, res: Response, next: NextFunction) => void;
