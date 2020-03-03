@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { requestErrorHandler, errorHandler } from './global';
+import { requestErrorHandler, errorHandler } from '../src/global';
 
 const next = jest.fn();
 const req = {} as Request;

@@ -4,9 +4,9 @@ import {
     entityNotFoundHandler,
     validationErrorHandler,
     duplicateKeyErrorHandler,
-} from './mongoose';
+} from '../src/mongoose';
 import { Request, Response } from 'express';
-import { ErrorsValidation } from './type';
+import { ErrorsValidation } from '../src/type';
 
 const next = jest.fn();
 const req = {} as Request;
