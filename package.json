@@ -2,7 +2,8 @@
     "name": "@la-recolte/error-middleware",
     "version": "0.1.4",
     "description": "Shared Node error handling middleware",
-    "main": "index.js",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
     "files": [
         "lib/**/*"
     ],
