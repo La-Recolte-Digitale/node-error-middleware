@@ -3,7 +3,7 @@
     "version": "0.1.3",
     "description": "Shared Node error handling middleware",
     "main": "index.js",
-    "files": ["/build/src"],
+    "files": ["lib/**/*"],
     "scripts": {
         "build": "npx tsc",
         "test": "npx jest",

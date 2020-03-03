@@ -3,7 +3,7 @@
         "target": "es5",
         "module": "commonjs",
         "declaration": true,
-        "outDir": "./build",
+        "outDir": "/lib",
         "strict": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
@@ -19,5 +19,6 @@
         "moduleResolution": "node",
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true
-    }
+    },
+    "exclude": ["node_modules", "/tests"]
 }
