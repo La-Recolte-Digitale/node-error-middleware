@@ -43,6 +43,8 @@ test:
 
 lint:
   stage: test
+  before_script:
+    - npm install
   script:
     - npm run lint
   except:
