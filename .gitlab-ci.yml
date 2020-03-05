@@ -32,8 +32,7 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   KUBERNETES_VERSION: 1.12.2
   KUBECONFIG: kube-config.yaml
-  DEPLOYMENT_NAME:  
-  SERVICE_NAME: 
+  DEPLOYMENT_NAME: "node error middleware"
 
 
 ###############
@@ -95,7 +94,8 @@ build:
 deploy:
   script:
     - npm run publish
-  only: master
+  only: 
+    - master
 
 
 #################
