@@ -10,7 +10,8 @@
     "scripts": {
         "build": "npx tsc",
         "test": "npx jest",
-        "lint": "npx eslint --fix --ext .ts ./src",
+        "lint": "npx eslint --ext .ts ./src",
+        "lint:fix": "npx eslint --fix --ext .ts ./src",
         "format": "npx prettier --write \"src/**/*.ts\"",
         "prepare": "npm run build",
         "prepublishOnly": "npm test && npm run lint",

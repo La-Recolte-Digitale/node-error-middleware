@@ -1,0 +1,101 @@
+image: node:12
+
+stages:
+  - test
+  - build
+  - publish
+  - open
+
+#############
+# TEMPLATES #
+#############
+
+include:
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Jobs/Code-Quality.gitlab-ci.yml
+  - project: 'la-recolte/template'
+    file: '/template-auto-mr.gitlab-ci.yml'  
+
+#############
+# VARIABLES #
+#############
+
+variables:
+  DOCKER_TLS_CERTDIR: ""
+  DDOCKER_DRIVER: overlay2
+
+###############
+# STAGE: TEST #
+###############
+
+test:
+  stage: test
+  before_script:
+    - npm install
+  script:
+    - npm run test
+  except:
+    - master
+
+###############
+# STAGE: LINT #
+###############
+
+lint:
+  stage: test
+  before_script:
+    - npm install
+  script:
+    - npm run lint
+  except:
+    - master
+
+#######################
+# STAGE: CODE QUALITY #
+#######################
+
+code_quality:
+  artifacts:
+    expire_in: 10 weeks
+    paths: [gl-code-quality-report.json]
+
+########################
+# STAGE: BUILD PACKAGE #
+########################
+
+build:
+  before_script:
+    - npm install
+  script:
+    - npm run build
+  except:
+    - master
+
+#########################
+# STAGE: DEPLOY PACKAGE #
+#########################
+
+deploy:
+
+  variables: 
+    NPM_TOKEN: ${NPM_TOKEN}
+  only:
+    - tags
+  before_script:
+    - npm install
+  script:
+    - npm run build
+    - npm --no-git-tag-version version ${CI_COMMIT_TAG}
+    - npm publish --access public
+
+#################
+# STAGE: AUTO-MR#
+#################
+    
+merge_request_production:
+  extends: .open_merge_request
+  variables:
+    SOURCE_BRANCH: staging
+    TARGET_BRANCH: master
+  only:
+    - staging
