@@ -1,11 +1,9 @@
-image: docker:19.03.1
-services:
-  - docker:19.03.1-dind
+image: node:12
 
 stages:
   - test
   - build
-  - deploy
+  - publish
   - open
 
 #############
@@ -16,50 +14,35 @@ include:
   - template: Security/SAST.gitlab-ci.yml
   - template: Jobs/Code-Quality.gitlab-ci.yml
   - project: 'la-recolte/template'
-    file: '/template-test.gitlab-ci.yml'
-  - project: 'la-recolte/template'
-    file: '/template-security.gitlab-ci.yml'
-  - project: 'la-recolte/template'
     file: '/template-auto-mr.gitlab-ci.yml'  
-
 
 #############
 # VARIABLES #
 #############
 
 variables:
-  DDOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
-  KUBERNETES_VERSION: 1.12.2
-  KUBECONFIG: kube-config.yaml
-  DEPLOYMENT_NAME: "node error middleware"
-
+  DDOCKER_DRIVER: overlay2
 
 ###############
 # STAGE: TEST #
 ###############
 
 test:
-  extends:
-    - .template-test
-    - .test
   stage: test
-  
-coverage:
-  extends:
-    - .template-test
-    - .test
-  stage: test
-  variables:
-    TEST_SCRIPT: coverage
-
+  script:
+    - npm run test
+  except:
+    - master
 
 ###############
 # STAGE: LINT #
 ###############
 
 lint:
-  extends: .lint
+  stage: test
+  script:
+    - npm run lint
   except:
     - master
 
@@ -72,13 +55,6 @@ code_quality:
     expire_in: 10 weeks
     paths: [gl-code-quality-report.json]
 
-###################
-# STAGE: SECURITY #
-###################
-
-security:
-  extends: .template-security
-
 ########################
 # STAGE: BUILD PACKAGE #
 ########################
@@ -86,6 +62,8 @@ security:
 build:
   script:
     - npm run build
+  except:
+    - master
 
 #########################
 # STAGE: DEPLOY PACKAGE #
@@ -96,7 +74,6 @@ deploy:
     - npm run publish
   only: 
     - master
-
 
 #################
 # STAGE: AUTO-MR#
