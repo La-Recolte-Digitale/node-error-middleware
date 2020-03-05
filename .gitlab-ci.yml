@@ -1,0 +1,111 @@
+image: docker:19.03.1
+services:
+  - docker:19.03.1-dind
+
+stages:
+  - test
+  - build
+  - deploy
+  - open
+
+#############
+# TEMPLATES #
+#############
+
+include:
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Jobs/Code-Quality.gitlab-ci.yml
+  - project: 'la-recolte/template'
+    file: '/template-test.gitlab-ci.yml'
+  - project: 'la-recolte/template'
+    file: '/template-security.gitlab-ci.yml'
+  - project: 'la-recolte/template'
+    file: '/template-auto-mr.gitlab-ci.yml'  
+
+
+#############
+# VARIABLES #
+#############
+
+variables:
+  DDOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+  KUBERNETES_VERSION: 1.12.2
+  KUBECONFIG: kube-config.yaml
+  DEPLOYMENT_NAME:  
+  SERVICE_NAME: 
+
+
+###############
+# STAGE: TEST #
+###############
+
+test:
+  extends:
+    - .template-test
+    - .test
+  stage: test
+  
+coverage:
+  extends:
+    - .template-test
+    - .test
+  stage: test
+  variables:
+    TEST_SCRIPT: coverage
+
+
+###############
+# STAGE: LINT #
+###############
+
+lint:
+  extends: .lint
+  except:
+    - master
+
+#######################
+# STAGE: CODE QUALITY #
+#######################
+
+code_quality:
+  artifacts:
+    expire_in: 10 weeks
+    paths: [gl-code-quality-report.json]
+
+###################
+# STAGE: SECURITY #
+###################
+
+security:
+  extends: .template-security
+
+########################
+# STAGE: BUILD PACKAGE #
+########################
+
+build:
+  script:
+    - npm run build
+
+#########################
+# STAGE: DEPLOY PACKAGE #
+#########################
+
+deploy:
+  script:
+    - npm run publish
+  only: master
+
+
+#################
+# STAGE: AUTO-MR#
+#################
+    
+merge_request_production:
+  extends: .open_merge_request
+  variables:
+    SOURCE_BRANCH: staging
+    TARGET_BRANCH: master
+  only:
+    - staging
