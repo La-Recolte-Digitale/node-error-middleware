@@ -3,7 +3,7 @@ image: node:12
 stages:
   - test
   - build
-  - publish
+  - deploy
   - open
 
 #############
@@ -55,6 +55,8 @@ lint:
 #######################
 
 code_quality:
+  except:
+    - master
   artifacts:
     expire_in: 10 weeks
     paths: [gl-code-quality-report.json]
