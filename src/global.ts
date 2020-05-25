@@ -12,7 +12,6 @@ export const requestErrorHandler = (err: ErrorWithStatusCode, _: Request, res: R
 
 // Handle Unhandled Errors
 export const errorHandler = (err: ErrorWithStatusCode, _: Request, res: Response): void => {
-    console.error(err);
     if (err.statusCode !== 500) {
         res.status(err.statusCode).json({
             error: { message: err.message },
